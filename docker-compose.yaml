@@ -1,0 +1,39 @@
+services:
+  web:
+    build: .
+    container_name: symfony
+    ports:
+      - "80:80"
+    volumes: 
+      - .:/var/www/html
+    depends_on:
+      - db
+    networks:
+      bid_calculation_network:
+        ipv4_address: 172.18.0.3
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    expose:
+      - '3306'
+    volumes:
+      - my_db:/var/lib/mysql
+    networks:
+      bid_calculation_network:
+        ipv4_address: 172.18.0.2
+
+volumes:
+  my_db:
+
+networks:
+  bid_calculation_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
+          gateway: 172.18.0.1

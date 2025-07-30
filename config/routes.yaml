@@ -1,0 +1,23 @@
+controllers:
+    resource: 
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+    prefix: /api/v1
+    
+
+admin_controllers:
+    resource: 
+        path: ../src/Admin/Infrastructure/Controller/
+        namespace: App\Admin\Infrastructure\Controller
+    type: attribute
+    prefix: /api/v1/admin
+    
+
+user_controllers:
+    resource: 
+        path: ../src/User/Infrastructure/Controller/
+        namespace: App\User\Infrastructure\Controller
+    type: attribute
+    prefix: /api/v1
+    
