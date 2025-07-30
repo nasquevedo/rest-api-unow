@@ -84,9 +84,5 @@ final class EmployeesController extends AbstractController
             $deleted,
             $deleted ? 'User Deleted' : 'User not Found'
         );
-
-        /*return new JsonResponse([
-            'success' => $deleted
-        ]);*/
     }
 }
