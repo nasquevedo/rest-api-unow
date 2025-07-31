@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ResponseService implements ResponseServiceInterface
 {
-    public function response($success, $message = "", $data = []): JsonResponse
+    public function response(bool $success, string $message = "", array $data = []): JsonResponse
     {
         return new JsonResponse([
             "success" => $success,

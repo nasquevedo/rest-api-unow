@@ -8,7 +8,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use App\Admin\Application\GetAllEmployees\GetAllEmployeesApplicationInterface;
 use App\Admin\Application\GetEmployee\GetEmployeeApplicationInterface;
 use App\Admin\Application\UpdateEmployee\UpdateEmployeeApplicationInterface;
@@ -31,10 +30,12 @@ final class EmployeesController extends AbstractController
     {
        $data = $this->getAllEmployees->getAll();
         
-        return $this->json([
-            'data' => $data,
-            'success' => true,
-        ], Response::HTTP_OK);
+        return $this->responseService->response(
+            true,
+            "Users Found",
+            $data,
+        );
+            
     }
 
     #[Route('/create/employee', name: 'app_create_employee', methods: ['POST'])]
@@ -44,10 +45,11 @@ final class EmployeesController extends AbstractController
 
         $user = $this->createEmployee->create($data);
 
-        return new JsonResponse([
-            'success' => true,
-            'employee' => $user
-        ]);
+        return $this->responseService->response(
+            true,
+            "User Created",
+            $user
+        );
     }
 
     #[Route('/employee/{id}', name: "app_employee", methods:['GET'])]
@@ -55,11 +57,11 @@ final class EmployeesController extends AbstractController
     {
        $user = $this->getEmployee->get($id);
 
-        return new JsonResponse([
-            'success' => true,
-            "employee" => $user
-        ]);
-
+        return $this->responseService->response(
+            true,
+            "User Found",
+            $user
+        );
     }
 
     #[Route('/update/employee/{id}', name: "app_update_employee", methods: ['PUT', 'PATCH'])]
@@ -69,10 +71,11 @@ final class EmployeesController extends AbstractController
 
         $user = $this->updateEmployee->update($id, $data);
 
-        return new JsonResponse([
-            'success' => true,
-            "employee" => $user
-        ]);
+        return $this->responseService->response(
+            true,
+            "User Updated",
+            $user
+        );
     }
 
     #[Route('/delete/employee/{id}', name: "app_delete_employee", methods: ['DELETE'])]
@@ -84,9 +87,5 @@ final class EmployeesController extends AbstractController
             $deleted,
             $deleted ? 'User Deleted' : 'User not Found'
         );
-
-        /*return new JsonResponse([
-            'success' => $deleted
-        ]);*/
     }
 }

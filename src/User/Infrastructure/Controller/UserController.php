@@ -8,12 +8,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use App\shared\Service\Response\ResponseServiceInterface;
+use App\User\Application\Login\LoginApplicationInterface;
+use App\User\Application\UpdateUser\UpdateUserApplicationInterface;
 
 final class UserController extends AbstractController
 {
     public function __construct(
         private RegisterApplicationInterface $registerApplication,
-        private ResponseServiceInterface $responseService
+        private ResponseServiceInterface $responseService,
+        private LoginApplicationInterface $loginApplication,
+        private UpdateUserApplicationInterface $updateUser
     )
     {}
 
@@ -27,6 +31,47 @@ final class UserController extends AbstractController
         return $this->responseService->response(
             $registered,
             $registered ? 'User Created' : 'User already Exists',
+        );
+    }
+    
+    #[Route('/login', name: 'app_login', methods: ['POST'])]
+    public function login(): JsonResponse
+    {
+        $user = $this->loginApplication->login();
+
+        if (count($user) > 0) {
+            return $this->responseService->response(
+                true,
+                "User was Found",
+                $user
+            );
+        }
+
+        return $this->responseService->response(
+            false,
+            "User not Fount",
+            $user
+        );
+    }
+
+    #[Route('/update/{id}', name: 'app_update_user', methods: ['PUT', 'PATCH'])]
+    public function update($id, Request $request): JsonResponse
+    {
+        $data = $request->toArray();
+
+        $newData = $this->updateUser->update($id, $data);
+
+        if (count($newData) > 0) {
+            return $this->responseService->response(
+                true,
+                "User Updated",
+                $newData
+            );
+        }
+
+        return $this->responseService->response(
+            false,
+            "User not Found"
         );
     }
 }
