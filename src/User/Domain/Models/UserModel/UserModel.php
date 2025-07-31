@@ -27,6 +27,7 @@ class UserModel implements UserModelInterface
             "lastName" => $this->lastName,
             "roles" => $this->roles,
             "email" => $this->email,
+            "position" => $this->position,
             "birthdate" => $this->birthdate
         ];
     }
