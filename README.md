@@ -1,13 +1,10 @@
-## The Bid Calculation
+## Restful API Unow
 
-This project is a Rest API for calculating the total price of a vehicle. It contains two routes to get the price and vehicle type. It is designed with layers like clean architecture and onion architecture, following the SOLID and clean code principles.
+This project is a RESTful API designed with Symfony to manage, log in, and register employees as a test for Unow. The architectures and patterns used to create this project are DDD, Hexagonal Architecture, and Repository Pattern. Following Domain Driven Design, the application was divided into different paths. Every path represents a module in the app (Admin and User). Every path was divided into different Layers, such as: Application (Use cases, Business Logic), Infrastructure (Communication with the external world), and Domain (Managing the business data).
 
-It contains two routes:.\
-`` /api/v1/vehicle/type ``.\
-Get the vehicle types to be shown on the select
+### endpoints
 
-``/api/v1/price?price=&type=``.\
-Get a summary of the values to determine the total price
+
 
 ### requirements
 - php8.3
@@ -20,20 +17,20 @@ Get a summary of the values to determine the total price
 First, clone the repository
 
 ```sh
-git clone https://github.com/nasquevedo/bid-calculation-be.git
+git clone https://github.com/nasquevedo/rest-api-unow.git
 ```
 
-Once the repository was cloned, go to the project ```cd bid-calculation-be``` 
+Once the repository was cloned, go to the project ```cd rest-api-unow``` 
 
 And create the .env file based on .env.local ```cp .env.local .env```
 
-Install the dependecis with composer
+Install the dependencies with composer
 
 ```sh
 composer install
 ```
 
-Run docker compose to create the image and container
+Run docker-compose to create the image and container
 
 ```sh
 docker-compose up -d --build
@@ -51,24 +48,24 @@ Finally, run the migrations
 docker exec symfony php bin/console doctrine:migrations:migrate
 ```
 
-Now, it could be testing via postman, using the next url and the endpoins mentioned in the description
+Now, it could be testing via Postman, using the next URL and the endpoints mentioned in the description
 [HTTP://localhost](HTTP://localhost)
 
 ### PHP commands
 generate a new migration
 
 ```sh
-docker exec symfony php bin/console doctrine:migrations:generate
+php bin/console doctrine:migrations:generate
 ```
 
 generate a new entity
 ```sh
-docker exec <container> php bin/console make:entity
+php bin/console make:entity
 ```
 
 generate a new controller
 ```sh
-docker exec <container> php bin/console make:controller NameController
+php bin/console make:controller NameController
 ```
 
 ## Testing
