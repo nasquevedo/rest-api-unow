@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use App\shared\Service\Response\ResponseServiceInterface;
+use App\User\Application\ChangePassword\ChangePasswordApplicationInterface;
 use App\User\Application\Login\LoginApplicationInterface;
 use App\User\Application\UpdateUser\UpdateUserApplicationInterface;
 
@@ -17,7 +18,8 @@ final class UserController extends AbstractController
         private RegisterApplicationInterface $registerApplication,
         private ResponseServiceInterface $responseService,
         private LoginApplicationInterface $loginApplication,
-        private UpdateUserApplicationInterface $updateUser
+        private UpdateUserApplicationInterface $updateUser,
+        private ChangePasswordApplicationInterface $changePassword
     )
     {}
 
@@ -72,6 +74,34 @@ final class UserController extends AbstractController
         return $this->responseService->response(
             false,
             "User not Found"
+        );
+    }
+
+    #[Route('/change-password', name: 'app_change_password_user', methods: ['PUT'])]
+    public function changePassword(Request $request): JsonResponse
+    {
+        $data = $request->toArray();
+        $changed = $this->changePassword->change($data['password'], $data['newPassword']);
+
+        if ($changed) {
+            return $this->responseService->response(
+                true,
+                "Password Changed"
+            );
+        }
+
+        return $this->responseService->response(
+            false,
+            "Something went wrong"
+        );
+    }
+
+    #[Route('/delete/{id}', name: 'app_delete_user', methods: ['DELETE'])]
+    public function delete(): JsonResponse
+    {
+        return $this->responseService->response(
+            true,
+            "User Deleted"
         );
     }
 }
