@@ -2,10 +2,6 @@
 
 This project is a RESTful API designed with Symfony to manage, log in, and register employees as a test for Unow. The architectures and patterns used to create this project are DDD, Hexagonal Architecture, and Repository Pattern. Following Domain Driven Design, the application was divided into different paths. Every path represents a module in the app (Admin and User). Every path was divided into different Layers, such as: Application (Use cases, Business Logic), Infrastructure (Communication with the external world), and Domain (Managing the business data).
 
-### endpoints
-
-
-
 ### requirements
 - php8.3
 - mysql8.0
@@ -21,6 +17,8 @@ git clone https://github.com/nasquevedo/rest-api-unow.git
 ```
 
 Once the repository was cloned, go to the project ```cd rest-api-unow``` 
+
+*** Note: use the branch develop provisionally: ```git checkout develop```
 
 And create the .env file based on .env.local ```cp .env.local .env```
 
