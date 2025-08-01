@@ -6,17 +6,20 @@ use App\User\Infrastructure\Entity\User;
 use App\Admin\Application\CreateEmployee\CreateEmployeeApplicationInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Admin\Service\RandomPasswordServiceInterface;
+use App\shared\Service\CustomeMessage\CustomMessageServiceInterface;
+use App\shared\Service\Mailer\MailerServiceInterface;
 use App\User\Domain\Models\UserModel\UserModel;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use DateTimeImmutable;
-use DateTime;
 
 class CreateEmployeeApplication implements CreateEmployeeApplicationInterface
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
         private RandomPasswordServiceInterface $randomPasswordService,
-        private UserPasswordHasherInterface $userPasswordHasher
+        private UserPasswordHasherInterface $userPasswordHasher,
+        private MailerServiceInterface $mailerService,
+        private CustomMessageServiceInterface $customMessage
     )
     {}
 
@@ -50,6 +53,15 @@ class CreateEmployeeApplication implements CreateEmployeeApplicationInterface
             $user->getEmail(),
             $user->getPosition(),
             $user->getBirthdate()
+        );
+
+        $message = $this->customMessage->customWelcomeMessage($user->getName(), $randomPassword);
+
+        $send = $this->mailerService->send(
+            "http://172.18.0.4/send-email", 
+            $user->getEmail(), 
+            "Welcome Message", 
+            $message
         );
         
         return $userModel->toArray();

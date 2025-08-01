@@ -2,6 +2,8 @@
 
 namespace App\User\Application\Register;
 
+use App\shared\Service\CustomeMessage\CustomMessageServiceInterface;
+use App\shared\Service\Mailer\MailerServiceInterface;
 use App\User\Infrastructure\Entity\User;
 use App\User\Application\Register\RegisterApplicationInterface;
 use App\User\Service\ValidateEmail\ValidateEmailService;
@@ -14,7 +16,9 @@ class RegisterApplication implements RegisterApplicationInterface
     public function __construct(
         private EntityManagerInterface $entityManager,
         private ValidateEmailService $validateEmailService,
-        private UserPasswordHasherInterface $userPasswordHasher
+        private UserPasswordHasherInterface $userPasswordHasher,
+        private MailerServiceInterface $mailerService,
+        private CustomMessageServiceInterface $customMessage
     )
     {}
 
@@ -44,6 +48,15 @@ class RegisterApplication implements RegisterApplicationInterface
 
             $this->entityManager->persist($user);
             $this->entityManager->flush();
+
+            $message = $this->customMessage->customRegisterMessage($user->getName());
+
+            $send = $this->mailerService->send(
+                "http://172.18.0.4/send-email",
+                $user->getEmail(),
+                "Register Message",
+                $message
+            );
 
             return true;
         }
