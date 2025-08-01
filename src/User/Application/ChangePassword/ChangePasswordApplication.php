@@ -2,7 +2,6 @@
 
 namespace App\User\Application\ChangePassword;
 
-use App\User\Infrastructure\Entity\User;
 use App\User\Application\ChangePassword\ChangePasswordApplicationInterface;
 use App\User\Infrastructure\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
