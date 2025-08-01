@@ -9,7 +9,7 @@ services:
     depends_on:
       - db
     networks:
-      bid_calculation_network:
+      unow_network:
         ipv4_address: 172.18.0.3
 
   db:
@@ -24,14 +24,14 @@ services:
     volumes:
       - my_db:/var/lib/mysql
     networks:
-      bid_calculation_network:
+      unow_network:
         ipv4_address: 172.18.0.2
 
 volumes:
   my_db:
 
 networks:
-  bid_calculation_network:
+  unow_network:
     driver: bridge
     ipam:
       config:
